@@ -29,3 +29,5 @@ routes.post('/products', new ProductController().create);
 routes.get('/products', new ProductController().findAll);
 routes.get('/products/:id', new ProductController().findById);
 routes.patch('/products/:id', new ProductController().update);
+routes.get('/manufacturers', new ProductController().findManufacturers);
+routes.get('/product-types', new ProductController().findProductTypes);

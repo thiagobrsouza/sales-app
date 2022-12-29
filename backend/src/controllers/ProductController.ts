@@ -29,4 +29,14 @@ export class ProductController {
     return res.json(result);
   }
 
+  async findManufacturers(req: Request, res: Response) {
+    const result = await service.listManufacturers();
+    return res.json(result);
+  }
+
+  async findProductTypes(req: Request, res: Response) {
+    const result = await service.listProductTypes();
+    return res.json(result);
+  }
+
 }

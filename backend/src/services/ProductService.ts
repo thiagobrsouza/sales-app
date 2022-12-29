@@ -91,4 +91,18 @@ export class ProductService {
     return productUpdated;
   }
 
+  /**
+   * list manufacturers
+   */
+  async listManufacturers() {
+    return await prisma.manufacturer.findMany();
+  }
+
+  /**
+   * list product types
+   */
+  async listProductTypes() {
+    return await prisma.productType.findMany();
+  }
+
 }
