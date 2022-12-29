@@ -16,3 +16,4 @@ routes.patch('/users/:id', new UserController().update);
  * profiles routes
  */
 routes.post('/profiles', new ProfileController().create);
+routes.patch('/profiles/:id', new ProfileController().update);

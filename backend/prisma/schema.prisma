@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -25,9 +22,28 @@ model User {
 }
 
 model Profile {
-  id   Int    @id @default(autoincrement())
-  name String @unique @db.VarChar(255)
-  users User[]
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique @db.VarChar(255)
+  users             User[]
+  profilePermission ProfilePermission[]
 
   @@map("profiles")
+}
+
+model Permission {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique @db.VarChar(255)
+  profilePermission ProfilePermission[]
+
+  @@map("permissions")
+}
+
+model ProfilePermission {
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profile      Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  permissionId Int
+  profileId    Int
+
+  @@id([permissionId, profileId])
+  @@map("profile_permissions")
 }
