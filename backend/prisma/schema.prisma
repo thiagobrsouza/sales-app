@@ -47,3 +47,34 @@ model ProfilePermission {
   @@id([permissionId, profileId])
   @@map("profile_permissions")
 }
+
+model Manufacturer {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique @db.VarChar(255)
+  products Product[]
+
+  @@map("manufacturers")
+}
+
+model Product {
+  id             Int          @id @default(autoincrement())
+  name           String       @db.VarChar(255)
+  partNumber     String       @unique @db.VarChar(255)
+  active         Boolean      @default(true)
+  type           ProductType  @relation(fields: [productTypeId], references: [id])
+  productTypeId  Int
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id])
+  manufacturerId Int
+  createdAt      String?
+  updatedAt      String?
+
+  @@map("products")
+}
+
+model ProductType {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(255)
+  products Product[]
+
+  @@map("product_types")
+}
