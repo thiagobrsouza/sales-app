@@ -28,12 +28,37 @@ export class ProfileService {
         }
       },
       select: {
-        id: true, name: true
+        id: true, name: true, profilePermission: {
+          select: { permission: true }
+        }
       }
     });
 
     return profile;
 
+  }
+
+  /**
+   * find all method
+   */
+  async findAll() {
+    const profiles = await prisma.profile.findMany();
+    return profiles;
+  }
+
+  /**
+   * find by id
+   */
+  async findById(id: number) {
+    const profile = await prisma.profile.findFirst({
+      where: { id },
+      select: {
+        id: true, name: true, profilePermission: {
+          select: { permission: true }
+        }
+      }
+    });
+    return profile;
   }
 
   /**
@@ -77,6 +102,19 @@ export class ProfileService {
     });
 
     return profileUpdated;
+  }
+
+  /**
+   * delete method
+   */
+  async deleteOne(id: number) {
+    try {
+      await prisma.profile.delete({
+        where: { id }
+      });
+    } catch {
+      throw new Error('Não é possível excluir esse perfil');
+    }
   }
 
 }
