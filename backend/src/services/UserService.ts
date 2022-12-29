@@ -8,7 +8,7 @@ export class UserService {
   /**
    * create method
    */
-  async create({ name, email, password, active }: CreateUserDto) {
+  async create({ name, email, password, active, profileId }: CreateUserDto) {
 
     const exists = await prisma.user.findFirst({
       where: { name }
@@ -22,10 +22,14 @@ export class UserService {
 
     const user = await prisma.user.create({
       data: {
-        name, email, password: hashPassword, active, createdAt: getCurrentTime()
+        name, email, password: hashPassword, active, createdAt: getCurrentTime(),
+        profile: {
+          connect: { id: profileId }
+        }
       },
       select: {
-        id: true, name: true, email: true, active: true
+        id: true, name: true, email: true, active: true,
+        profile: true
       }
     });
 
@@ -39,7 +43,7 @@ export class UserService {
   async findAll() {
     const users = await prisma.user.findMany({
       select: {
-        id: true, name: true, email: true, active: true
+        id: true, name: true, email: true, active: true, profile: true
       }
     });
     return users;
@@ -52,7 +56,8 @@ export class UserService {
     const user = await prisma.user.findFirst({
       where: { id },
       select: {
-        id: true, name: true, email: true, active: true, createdAt: true, updatedAt: true
+        id: true, name: true, email: true, active: true, createdAt: true, updatedAt: true,
+        profile: true
       }
     });
     return user;
@@ -61,7 +66,7 @@ export class UserService {
   /**
    * update method
    */
-  async update(id: number, { name, email, active }: UpdateUserDto) {
+  async update(id: number, { name, email, active, profileId }: UpdateUserDto) {
 
     const user = await prisma.user.findFirst({
       where: { id }
@@ -75,15 +80,20 @@ export class UserService {
       throw new Error('E-mail já cadastrado');
     }
 
-    return await prisma.user.update({
+    const userUpdated = await prisma.user.update({
       where: { id },
       data: {
-        name, email, active, updatedAt: getCurrentTime()
+        name, email, active, updatedAt: getCurrentTime(),
+        profile: {
+          connect: { id: profileId }
+        }
       },
       select: {
-        id: true, name: true, email: true, active: true
+        id: true, name: true, email: true, active: true, profile: true
       }
     });
+
+    return userUpdated;
 
   }
 
