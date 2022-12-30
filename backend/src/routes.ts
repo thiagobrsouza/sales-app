@@ -2,6 +2,7 @@ import { Router } from "express";
 import { UserController } from "./controllers/UserController";
 import { ProfileController } from "./controllers/ProfileController";
 import { ProductController } from "./controllers/ProductController";
+import { OrderController } from "./controllers/OrderController";
 
 export const routes = Router();
 
@@ -31,3 +32,8 @@ routes.get('/products/:id', new ProductController().findById);
 routes.patch('/products/:id', new ProductController().update);
 routes.get('/manufacturers', new ProductController().findManufacturers);
 routes.get('/product-types', new ProductController().findProductTypes);
+
+/**
+ * orders routes
+ */
+routes.post('/orders', new OrderController().create);
