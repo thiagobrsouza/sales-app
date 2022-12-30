@@ -12,4 +12,9 @@ export class OrderItemController {
     return res.status(201).json(result);
   }
 
+  async removeItemFromOrder(req: Request, res: Response) {
+    const { orderId, productId } = req.params;
+    res.json(await service.removeItemFromOrder(+orderId, +productId));
+  }
+
 }

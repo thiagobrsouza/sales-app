@@ -11,4 +11,11 @@ export class OrderController {
     return res.status(201).json(result);
   }
 
+  async update(req: Request, res: Response) {
+    const { orderId } = req.params;
+    const { userId, status, items } = req.body;
+    const result = await service.update(+orderId, { userId, status, items });
+    return res.json(result);
+  }
+
 }

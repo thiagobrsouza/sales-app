@@ -4,6 +4,9 @@ import { prisma } from "../prisma";
 
 export class OrderItemService {
 
+  /**
+   * add items to order
+   */
   async addItemToOrder(orderId: number, { productId, price, ammount }: OrderItemDto) {
     
     const item = await prisma.orderItem.create({
@@ -20,7 +23,7 @@ export class OrderItemService {
 
     const orderItems = await prisma.orderItem.findMany({
       where: {
-        orderId
+        orderId: orderId
       }
     });
 
@@ -38,6 +41,38 @@ export class OrderItemService {
     });
 
     return item;
+
+  }
+
+  /**
+   * remove items from order
+   */
+  async removeItemFromOrder(orderId: number, itemId: any) {
+
+    const item = await prisma.orderItem.findFirst({
+      where: { productId: itemId, orderId: orderId }
+    });
+
+    await prisma.orderItem.deleteMany({
+      where: { orderId, productId: itemId }
+    });
+
+    const updateOrderItem = await prisma.orderItem.findMany({
+      where: { orderId }
+    });
+
+    let totalValue: number = 0;
+    updateOrderItem.forEach((i: any) => {
+      totalValue += i.price * i.ammount
+    });
+
+    await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        totalValue: totalValue,
+        updatedAt: getCurrentTime()
+      }
+    });
 
   }
 

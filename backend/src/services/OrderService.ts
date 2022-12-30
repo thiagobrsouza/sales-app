@@ -1,4 +1,4 @@
-import { CreateOrderDto } from "../dto/OrderDto";
+import { CreateOrderDto, UpdateOrderDto } from "../dto/OrderDto";
 import { getCurrentTime } from "../middlewares/currentTime";
 import { prisma } from "../prisma";
 
@@ -23,6 +23,13 @@ export class OrderService {
     });
 
     return order;
+  }
+
+  /**
+   * update method
+   */
+  async update(orderId: number, { userId, status, items }: UpdateOrderDto) {
+
   }
 
 }

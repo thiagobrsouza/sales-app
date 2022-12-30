@@ -6,6 +6,7 @@ class CreateOrderDto {
 class UpdateOrderDto {
   userId!: number;
   status!: string;
+  items!: number[];
 }
 
 class OrderItemDto {
@@ -16,5 +17,6 @@ class OrderItemDto {
 
 export {
   CreateOrderDto,
+  UpdateOrderDto,
   OrderItemDto
 }
