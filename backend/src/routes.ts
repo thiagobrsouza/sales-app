@@ -9,60 +9,43 @@ import { check } from "express-validator";
 import { body } from "express-validator/src/middlewares/validation-chain-builders";
 import { validationResult } from "express-validator/src/validation-result";
 import { validate } from "./middlewares/validationExpress";
+import { profileRoutes } from "./routes/ProfileRoutes";
+import { customerRoutes } from "./routes/CustomerRoutes";
+import { manufacturerRoutes, productTypeRoutes } from "./routes/ProductRoutes";
+import { userRoutes } from "./routes/UserRoutes";
+import { orderRoutes } from "./routes/OrderRoutes";
+import { itemsRoutes } from "./routes/OrderItemRoutes";
 
 export const routes = Router();
 
 /**
  * users routes
  */
-routes.post('/users', new UserController().create);
-routes.get('/users', new UserController().findAll);
-routes.get('/users/:id', new UserController().findById);
-routes.patch('/users/:id', new UserController().update);
+routes.use('/users', userRoutes);
 
 /**
- * profiles routes
+ * profile routes
  */
-routes.post('/profiles',
-  [
-    check('name').notEmpty().withMessage('Nome é obrigatório')
-  ], validate,
-new ProfileController().create);
-routes.get('/profiles', new ProfileController().findAll);
-routes.get('/profiles/:id', new ProfileController().findById);
-routes.patch('/profiles/:id', new ProfileController().update);
-routes.delete('/profiles/:id', new ProfileController().deleteOne);
+routes.use('/profiles', profileRoutes);
 
 /**
  * customers routes
  */
-routes.post('/customers', new CustomerController().create);
-routes.get('/customers', new CustomerController().findAll);
-routes.get('/customers/:id', new CustomerController().findById);
-routes.patch('/customers/:id', new CustomerController().update);
+routes.use('/customers', customerRoutes);
 
 /**
  * products routes
  */
-routes.post('/products', new ProductController().create);
-routes.get('/products', new ProductController().findAll);
-routes.get('/products/:id', new ProductController().findById);
-routes.patch('/products/:id', new ProductController().update);
-routes.get('/manufacturers', new ProductController().findManufacturers);
-routes.get('/product-types', new ProductController().findProductTypes);
+routes.use('/products', profileRoutes);
+routes.use('/manufacturers', manufacturerRoutes);
+routes.use('/product-types', productTypeRoutes);
 
 /**
  * orders routes
  */
-routes.post('/orders', new OrderController().create);
-routes.patch('/orders/:id', new OrderController().update);
-routes.delete('/orders/:id', new OrderController().deleteOne);
-routes.get('/orders', new OrderController().findAll);
-routes.get('/orders/:id', new OrderController().findById);
+routes.use('/orders', orderRoutes);
 
 /**
  * order items routes
  */
-routes.post('/orders/:orderId/items', new OrderItemController().addItemToOrder);
-routes.delete('/orders/:orderId/items/:productId', new OrderItemController().removeItemFromOrder);
-routes.patch('/orders/:orderId/items/:productId', new OrderItemController().updateItem);
+routes.use('/orders', itemsRoutes);
