@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  name      String  @db.VarChar(255)
-  email     String  @unique @db.VarChar(255)
-  password  String  @db.VarChar(255)
-  active    Boolean @default(true)
-  profile   Profile @relation(fields: [profileId], references: [id])
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(255)
+  email     String     @unique @db.VarChar(255)
+  password  String     @db.VarChar(255)
+  active    Boolean    @default(true)
+  profile   Profile    @relation(fields: [profileId], references: [id])
   profileId Int
   createdAt String?
   updatedAt String?
   Order     Order[]
+  Customer  Customer[]
 
   @@map("users")
 }
@@ -86,6 +87,8 @@ model Order {
   totalValue Decimal     @db.Decimal(15, 2)
   seller     User        @relation(fields: [userId], references: [id])
   userId     Int
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  customerId Int
   status     String
   items      OrderItem[]
   createdAt  String?
@@ -104,4 +107,17 @@ model OrderItem {
   ammount   Int
 
   @@map("order_items")
+}
+
+model Customer {
+  id     Int     @id @default(autoincrement())
+  name   String  @db.VarChar(255)
+  cnpj   String  @unique @db.VarChar(20)
+  type   String  @db.VarChar(20)
+  seller User    @relation(fields: [userId], references: [id])
+  userId Int
+  notes  String?  @db.LongText
+  Order  Order[]
+
+  @@map("customers")
 }

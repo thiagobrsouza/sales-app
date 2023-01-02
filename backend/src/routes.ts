@@ -4,6 +4,7 @@ import { ProfileController } from "./controllers/ProfileController";
 import { ProductController } from "./controllers/ProductController";
 import { OrderController } from "./controllers/OrderController";
 import { OrderItemController } from "./controllers/OrderItemController";
+import { CustomerController } from "./controllers/CustomerController";
 
 export const routes = Router();
 
@@ -23,6 +24,14 @@ routes.get('/profiles', new ProfileController().findAll);
 routes.get('/profiles/:id', new ProfileController().findById);
 routes.patch('/profiles/:id', new ProfileController().update);
 routes.delete('/profiles/:id', new ProfileController().deleteOne);
+
+/**
+ * customers routes
+ */
+routes.post('/customers', new CustomerController().create);
+routes.get('/customers', new CustomerController().findAll);
+routes.get('/customers/:id', new CustomerController().findById);
+routes.patch('/customers/:id', new CustomerController().update);
 
 /**
  * products routes

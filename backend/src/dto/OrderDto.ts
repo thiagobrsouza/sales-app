@@ -1,12 +1,14 @@
 class CreateOrderDto {
   userId!: number;
   status!: string;
+  customerId!: number;
 }
 
 class UpdateOrderDto {
   orderId?: number;
   userId!: number;
   status!: string;
+  customerId!: number;
 }
 
 class OrderItemDto {

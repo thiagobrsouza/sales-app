@@ -7,18 +7,20 @@ export class OrderService {
   /**
    * create method
    */
-  async create({ userId, status }: CreateOrderDto) {
+  async create({ userId, status, customerId }: CreateOrderDto) {
 
     const order = await prisma.order.create({
       data: {
         seller: { connect: { id: userId } },
+        customer: { connect: { id: customerId } },
         status,
         totalValue: 0,
         createdAt: getCurrentTime()
       },
       select: {
         id: true, totalValue: true, status: true, createdAt: true,
-        seller: { select: { id: true, name: true, email: true } }
+        seller: { select: { id: true, name: true, email: true } },
+        customer: { select: { id: true, name: true } }
       }
     });
 
@@ -47,6 +49,7 @@ export class OrderService {
       select: {
         id: true, totalValue: true, status: true,
         seller: { select: { id: true, name: true, email: true } },
+        customer: { select: { id: true, name: true } },
         items: {
           select: {
             id: true, price: true, ammount: true,
@@ -61,18 +64,20 @@ export class OrderService {
   /**
    * update method
    */
-  async update({ orderId, userId, status }: UpdateOrderDto) {
+  async update({ orderId, userId, status, customerId }: UpdateOrderDto) {
 
     const order = await prisma.order.update({
       where: { id: orderId },
       data: {
         seller: { connect: { id: userId } },
+        customer: { connect: { id: customerId } },
         status,
         updatedAt: getCurrentTime()
       },
       select: {
         id: true, totalValue: true, status: true, createdAt: true,
-        seller: { select: { id: true, name: true, email: true } }
+        seller: { select: { id: true, name: true, email: true } },
+        customer: { select: { id: true, name: true } }
       }
     });
 
