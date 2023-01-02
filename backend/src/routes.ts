@@ -1,14 +1,4 @@
 import { Router } from "express";
-import { UserController } from "./controllers/UserController";
-import { ProfileController } from "./controllers/ProfileController";
-import { ProductController } from "./controllers/ProductController";
-import { OrderController } from "./controllers/OrderController";
-import { OrderItemController } from "./controllers/OrderItemController";
-import { CustomerController } from "./controllers/CustomerController";
-import { check } from "express-validator";
-import { body } from "express-validator/src/middlewares/validation-chain-builders";
-import { validationResult } from "express-validator/src/validation-result";
-import { validate } from "./middlewares/validationExpress";
 import { profileRoutes } from "./routes/ProfileRoutes";
 import { customerRoutes } from "./routes/CustomerRoutes";
 import { manufacturerRoutes, productTypeRoutes } from "./routes/ProductRoutes";
