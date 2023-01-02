@@ -11,10 +11,27 @@ export class OrderController {
     return res.status(201).json(result);
   }
 
+  async findAll(req: Request, res: Response) {
+    const result = await service.findAll();
+    return res.status(201).json(result);
+  }
+
+  async findById(req: Request, res: Response) {
+    const orderId = parseInt(req.params.orderId);
+    const result = await service.findById(orderId);
+    return res.status(201).json(result);
+  }
+
   async update(req: Request, res: Response) {
-    const { orderId } = req.params;
-    const { userId, status, items } = req.body;
-    const result = await service.update(+orderId, { userId, status, items });
+    const orderId = parseInt(req.params.orderId);
+    const { userId, status } = req.body;
+    const result = await service.update({ orderId, userId, status });
+    return res.json(result);
+  }
+
+  async deleteOne(req: Request, res: Response) {
+    const orderId = parseInt(req.params.orderId);
+    const result = await service.deleteOne(orderId);
     return res.json(result);
   }
 

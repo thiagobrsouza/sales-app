@@ -4,9 +4,9 @@ class CreateOrderDto {
 }
 
 class UpdateOrderDto {
+  orderId?: number;
   userId!: number;
   status!: string;
-  items!: number[];
 }
 
 class OrderItemDto {
