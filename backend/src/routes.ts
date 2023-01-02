@@ -5,6 +5,10 @@ import { ProductController } from "./controllers/ProductController";
 import { OrderController } from "./controllers/OrderController";
 import { OrderItemController } from "./controllers/OrderItemController";
 import { CustomerController } from "./controllers/CustomerController";
+import { check } from "express-validator";
+import { body } from "express-validator/src/middlewares/validation-chain-builders";
+import { validationResult } from "express-validator/src/validation-result";
+import { validate } from "./middlewares/validationExpress";
 
 export const routes = Router();
 
@@ -19,7 +23,11 @@ routes.patch('/users/:id', new UserController().update);
 /**
  * profiles routes
  */
-routes.post('/profiles', new ProfileController().create);
+routes.post('/profiles',
+  [
+    check('name').notEmpty().withMessage('Nome é obrigatório')
+  ], validate,
+new ProfileController().create);
 routes.get('/profiles', new ProfileController().findAll);
 routes.get('/profiles/:id', new ProfileController().findById);
 routes.patch('/profiles/:id', new ProfileController().update);
