@@ -10,9 +10,10 @@ class UpdateOrderDto {
 }
 
 class OrderItemDto {
+  orderId?: number;
   productId!: number;
   ammount!: number;
-  price!: number;
+  price!: any;
 }
 
 export {

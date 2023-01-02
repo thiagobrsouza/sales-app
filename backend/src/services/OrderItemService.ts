@@ -7,8 +7,8 @@ export class OrderItemService {
   /**
    * add items to order
    */
-  async addItemToOrder(orderId: number, { productId, price, ammount }: OrderItemDto) {
-    
+  async addItemToOrder({ orderId, price, productId, ammount }: OrderItemDto) {
+
     const item = await prisma.orderItem.create({
       data: {
         order: {
@@ -17,14 +17,12 @@ export class OrderItemService {
         product: {
           connect: { id: productId }
         },
-        ammount, price
+        price, ammount
       }
     });
 
     const orderItems = await prisma.orderItem.findMany({
-      where: {
-        orderId: orderId
-      }
+      where: { orderId: orderId }
     });
 
     let totalValue: number = 0;
@@ -47,22 +45,52 @@ export class OrderItemService {
   /**
    * remove items from order
    */
-  async removeItemFromOrder(orderId: number, itemId: any) {
+  async removeItemFromOrder(orderId: number, itemId: number) {
 
     const item = await prisma.orderItem.findFirst({
-      where: { productId: itemId, orderId: orderId }
+      where: { id: itemId }
     });
 
-    await prisma.orderItem.deleteMany({
-      where: { orderId, productId: itemId }
+    await prisma.orderItem.delete({
+      where: { id: itemId }
     });
 
-    const updateOrderItem = await prisma.orderItem.findMany({
-      where: { orderId }
+    const order = await prisma.order.findFirst({
+      where: { id: orderId }
+    });
+
+    const updateOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        totalValue: Number(order?.totalValue) - ((Number(item?.price) * Number(item?.ammount))),
+        updatedAt: getCurrentTime()
+      }
+    });
+
+  }
+
+  /**
+   * update method
+   */
+  async updateItem({ orderId, price, productId, ammount }: OrderItemDto) {
+
+    const item = await prisma.orderItem.findFirst({
+      where: { id: productId }
+    });
+
+    const updatedItem = await prisma.orderItem.update({
+      where: { id: productId },
+      data: {
+        price, ammount
+      }
+    });
+
+    const orderItems = await prisma.orderItem.findMany({
+      where: { orderId: orderId }
     });
 
     let totalValue: number = 0;
-    updateOrderItem.forEach((i: any) => {
+    orderItems.forEach((i: any) => {
       totalValue += i.price * i.ammount
     });
 
@@ -73,6 +101,8 @@ export class OrderItemService {
         updatedAt: getCurrentTime()
       }
     });
+
+    return updatedItem;
 
   }
 
