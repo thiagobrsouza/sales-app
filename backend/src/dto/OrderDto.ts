@@ -5,7 +5,6 @@ class CreateOrderDto {
 }
 
 class UpdateOrderDto {
-  orderId?: number;
   userId!: number;
   status!: string;
   customerId!: number;

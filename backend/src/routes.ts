@@ -47,10 +47,10 @@ routes.get('/product-types', new ProductController().findProductTypes);
  * orders routes
  */
 routes.post('/orders', new OrderController().create);
-routes.patch('/orders/:orderId', new OrderController().update);
-routes.delete('/orders/:orderId', new OrderController().deleteOne);
+routes.patch('/orders/:id', new OrderController().update);
+routes.delete('/orders/:id', new OrderController().deleteOne);
 routes.get('/orders', new OrderController().findAll);
-routes.get('/orders/:orderId', new OrderController().findById);
+routes.get('/orders/:id', new OrderController().findById);
 
 /**
  * order items routes

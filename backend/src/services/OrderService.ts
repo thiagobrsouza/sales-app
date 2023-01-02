@@ -43,9 +43,9 @@ export class OrderService {
   /**
    * find one by id
    */
-  async findById(orderId: number) {
+  async findById(id: number) {
     const order = await prisma.order.findFirst({
-      where: { id: orderId },
+      where: { id },
       select: {
         id: true, totalValue: true, status: true,
         seller: { select: { id: true, name: true, email: true } },
@@ -64,10 +64,10 @@ export class OrderService {
   /**
    * update method
    */
-  async update({ orderId, userId, status, customerId }: UpdateOrderDto) {
+  async update(id: number, { userId, status, customerId }: UpdateOrderDto) {
 
     const order = await prisma.order.update({
-      where: { id: orderId },
+      where: { id },
       data: {
         seller: { connect: { id: userId } },
         customer: { connect: { id: customerId } },
@@ -88,10 +88,10 @@ export class OrderService {
   /**
    * delete method
    */
-  async deleteOne(orderId: number) {
+  async deleteOne(id: number) {
     try {
       await prisma.order.delete({
-        where: { id: orderId }
+        where: { id }
       });
     } catch {
       throw new Error('A venda não pode ser removida');
