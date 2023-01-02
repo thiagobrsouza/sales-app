@@ -1,12 +1,22 @@
 import { Router } from "express";
 import { OrderController } from "../controllers/OrderController";
+import { check } from "express-validator";
+import { validate } from "../middlewares/validationExpress";
 
 export const orderRoutes = Router();
 
 /**
  * create route
  */
-orderRoutes.post('/', new OrderController().create);
+orderRoutes.post('/',
+  [
+    check('userId').notEmpty().withMessage('Vendedor é obrigatório'),
+    check('customerId').notEmpty().withMessage('Cliente é obrigatório'),
+    check('status').notEmpty().withMessage('Status da venda é obrigatório')
+  ],
+  validate,
+  new OrderController().create
+);
 
 /**
  * find routes
@@ -17,7 +27,15 @@ orderRoutes.get('/:id', new OrderController().findById);
 /**
  * update route
  */
-orderRoutes.patch('/:id', new OrderController().update);
+orderRoutes.patch('/:id',
+  [
+    check('userId').notEmpty().withMessage('Vendedor é obrigatório'),
+    check('customerId').notEmpty().withMessage('Cliente é obrigatório'),
+    check('status').notEmpty().withMessage('Status da venda é obrigatório')
+  ],
+  validate,
+  new OrderController().update
+);
 
 /**
  * delete route
