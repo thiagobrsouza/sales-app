@@ -1,9 +1,9 @@
-
+import { Layout } from "../components/layout";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Bem-vindo ao meu app</h1>
-    </div>
+    <Layout>
+      <h3>teste</h3>
+    </Layout>
   )
 }
